@@ -1,10 +1,10 @@
 <template>
-<div class="speedometer-container">
+    <div class="speedometer-container">
     <div class="speedometer-text">
-        <div class="static">Power</div>
+        <div class="static">Speed</div>
         <div class="dynamic">
-            <span class="watts">0</span>
-            <span class="unit">W</span>
+            <span class="km">0</span>
+            <span class="unit">KM/H</span>
         </div>
     </div>
     <div class="center-point"></div>
@@ -35,11 +35,12 @@
     <div class="speedometer-scale speedometer-scale-18"></div>
     <div class="speedometer-scale speedometer-scale-19"></div>
 </div>
+
 </template>
 
 <script>
 export default {
-    name: 'TheWattmeter '
+    name: 'TheSpeedometer'
 }
 </script>
 
@@ -140,8 +141,62 @@ export default {
     left: 161px;
 }
 
-.active-scale {
-    background-color: purple;
+.active-scale-1 {
+    background-color: green;
+}
+.active-scale-2 {
+    background-color: rgb(8, 181, 8);
+}
+.active-scale-3 {
+    background-color: rgb(21, 202, 21);
+}
+.active-scale-4 {
+    background-color: rgb(43, 244, 43);
+}
+.active-scale-5 {
+    background-color: rgb(79, 251, 79);
+}
+.active-scale-6 {
+    background-color: rgb(133, 251, 79);
+}
+.active-scale-7 {
+    background-color: rgb(199, 251, 79);
+}
+.active-scale-8 {
+    background-color: rgb(228, 251, 79);
+}
+.active-scale-9 {
+    background-color: rgb(251, 251, 79);
+}
+.active-scale-10 {
+    background-color: rgb(251, 234, 79);
+}
+.active-scale-11 {
+    background-color: rgb(251, 205, 79);
+}
+.active-scale-12 {
+    background-color: rgb(251, 168, 79);
+}
+.active-scale-13 {
+    background-color: rgb(251, 139, 79);
+}
+.active-scale-14 {
+    background-color: rgb(251, 122, 79);
+}
+.active-scale-15 {
+    background-color: rgb(251, 99, 79);
+}
+.active-scale-16 {
+    background-color: rgb(251, 90, 79);
+}
+.active-scale-17 {
+    background-color: rgb(247, 61, 47);
+}
+.active-scale-18 {
+    background-color: rgb(247, 47, 47);
+}
+.active-scale-19 {
+    background-color: red;
 }
 
 .speedometer-center-hide {
@@ -215,7 +270,7 @@ export default {
     margin-top: 10px;
 }
 
-.watts {
+.km {
     font-size: 32px;
 }
 

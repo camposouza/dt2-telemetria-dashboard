@@ -3,11 +3,11 @@
 <header>EQUIPE MILHAGEM</header>
 <div class="dashboard">
     <div class="area-1">
-        <div class="velocimetro">
-            ENCODER
-        </div>
         <div class="termometro">
-            LM35
+            <TheTermometer />
+        </div>
+        <div class="velocimetro">
+            <TheSpeedometer />
         </div>
     </div>
     <div class="area-tensao-corrente">
@@ -19,7 +19,10 @@
         </div>
     </div>
     <div class='area-wattmetro'>
-        <TheWattmeter />
+        <div class="dummy"></div>
+        <div class="wattmetro">
+            <TheWattmeter />
+        </div>
     </div>
     <div class="area-mapa">MAPA</div>
 </div>
@@ -28,11 +31,15 @@
 
 <script>
     import TheWattmeter from './components/TheWattmeter.vue';
+    import TheSpeedometer from './components/TheSpeedometer.vue';
+    import TheTermometer from './components/TheTermometer.vue';
 
     export default {
         name: 'App',
         components: {
-            TheWattmeter
+            TheWattmeter,
+            TheSpeedometer,
+            TheTermometer
         }
     }
 </script>
@@ -41,7 +48,7 @@
 @import './css/reset.css';
 header {
     height: 50px;
-    background-color: aqua;
+    background-color: #155c94;
 }
 
 .dashboard {
@@ -51,17 +58,17 @@ header {
 }
 
 .area-1 {
-    background-color: blue;
     display: grid;
-    grid-template-columns: 80% 20%;
-}
-
-.velocimetro {
-    background-color: rgb(57, 57, 167) ;
+    grid-template-columns: 20% 80%;
+    z-index: 1;
 }
 
 .termometro {
-    background-color: rgb(16, 16, 94);
+    height: 100vh;
+    margin: 0;
+    font-family: "Jaldi", sans-serif;
+    font-size: 14px;
+    color: white;
 }
 
 .area-tensao-corrente {
@@ -77,6 +84,12 @@ header {
 
 .graficos {
     background-color: rgb(170, 44, 44);
+}
+
+.area-wattmetro {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    z-index: 10;
 }
 
 .area-mapa {
