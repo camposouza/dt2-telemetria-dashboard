@@ -7,7 +7,6 @@
 	
 	<div id="playground">		
 		<div id="range">
-      <span>Mínima: </span>
 			<input id="minTemp" type="text" lm35Templue="70">
 		</div>
 		<p id="unit">Celcius C°</p>
@@ -17,12 +16,89 @@
 </template>
 
 <script>
-    export default {
-        name: 'TheTermometer'
-    }
+import $ from 'jquery';
+
+export default {
+  name: 'TheTermometer',
+  data() {
+    return {
+      units: {
+        Celcius: '°C',
+        Fahrenheit: '°F',
+      },
+      config: {
+        minTemp: 0,
+        maxTemp: 70,
+        unit: 'Celcius',
+      },
+      lm35Temp: 0,
+    };
+  },
+  computed: {
+    temperatureHeight() {
+      return ((this.lm35Temp - this.config.minTemp) / (this.config.maxTemp - this.config.minTemp)) * 100 + '%';
+    },
+    temperatureValue() {
+      return this.lm35Temp + this.units[this.config.unit];
+    },
+    unit() {
+      return this.config.unit === 'Celcius' ? 'C' : 'F';
+    },
+  },
+  methods: {
+    setTemperature() {
+      $('#temperature').css('height', this.temperatureHeight);
+      $('#temperature').attr('data-value', this.temperatureValue);
+    },
+    toggleUnit() {
+      this.config.unit = this.config.unit === 'Celcius' ? 'Fahrenheit' : 'Celcius';
+      this.setTemperature();
+    },
+  },
+  mounted() {
+    const self = this;
+
+    const tempValueInputs = $('input[type="text"]');
+
+    tempValueInputs.each(function () {
+      $(this).change(function () {
+        const newValue = $(this).val();
+
+        if (isNaN(newValue)) {
+          $(this).val(self.config[$(this).attr('id')]);
+        } else {
+          self.config[$(this).attr('id')] = $(this).val();
+          self.setTemperature();
+        }
+      });
+    });
+
+    setInterval(function () {
+      $.ajax({
+        url: '../php/db_query_lm35.php',
+        type: 'POST',
+        dataType: 'json',
+        success: function (result) {
+          self.lm35Temp = result.celcius;
+          self.setTemperature();
+        }
+      });
+    }, 3000);
+
+    $('#range').on('input', function () {
+      self.setTemperature();
+    });
+
+    setTimeout(function () {
+      self.setTemperature();
+    }, 1000);
+  },
+};
+
 </script>
 
-<style>
+
+<style scoped>
 @import url("https://fonts.googleapis.com/css?family=Jaldi&display=swap");
 
 #wrapper {

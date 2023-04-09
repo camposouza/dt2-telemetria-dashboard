@@ -1,6 +1,6 @@
-<template>
-<div class="speedometer-container">
-    <div class="speedometer-text">
+<template scoped>
+<div class="wattmeter-container">
+    <div class="wattmeter-text">
         <div class="static">Power</div>
         <div class="dynamic">
             <span class="watts">0</span>
@@ -8,49 +8,110 @@
         </div>
     </div>
     <div class="center-point"></div>
-    <div class="speedometer-center-hide"></div>
-    <div class="speedometer-bottom-hide"></div>
+    <div class="wattmeter-center-hide"></div>
+    <div class="wattmeter-bottom-hide"></div>
     <div class="arrow-container">
-        <div class="arrow-wrapper arrow-angle">
+        <div class="arrow-wrapper arrow-angle-wattmeter">
             <div class="arrow"></div>
         </div>
     </div>
-    <div class="speedometer-scale speedometer-scale-1 "></div>
-    <div class="speedometer-scale speedometer-scale-2"></div>
-    <div class="speedometer-scale speedometer-scale-3"></div>
-    <div class="speedometer-scale speedometer-scale-4"></div>
-    <div class="speedometer-scale speedometer-scale-5"></div>
-    <div class="speedometer-scale speedometer-scale-6"></div>
-    <div class="speedometer-scale speedometer-scale-7"></div>
-    <div class="speedometer-scale speedometer-scale-8"></div>
-    <div class="speedometer-scale speedometer-scale-9"></div>
-    <div class="speedometer-scale speedometer-scale-10"></div>
-    <div class="speedometer-scale speedometer-scale-11"></div>
-    <div class="speedometer-scale speedometer-scale-12"></div>
-    <div class="speedometer-scale speedometer-scale-13"></div>
-    <div class="speedometer-scale speedometer-scale-14"></div>
-    <div class="speedometer-scale speedometer-scale-15"></div>
-    <div class="speedometer-scale speedometer-scale-16"></div>
-    <div class="speedometer-scale speedometer-scale-17"></div>
-    <div class="speedometer-scale speedometer-scale-18"></div>
-    <div class="speedometer-scale speedometer-scale-19"></div>
+    <div class="wattmeter-scale wattmeter-scale-1 "></div>
+    <div class="wattmeter-scale wattmeter-scale-2"></div>
+    <div class="wattmeter-scale wattmeter-scale-3"></div>
+    <div class="wattmeter-scale wattmeter-scale-4"></div>
+    <div class="wattmeter-scale wattmeter-scale-5"></div>
+    <div class="wattmeter-scale wattmeter-scale-6"></div>
+    <div class="wattmeter-scale wattmeter-scale-7"></div>
+    <div class="wattmeter-scale wattmeter-scale-8"></div>
+    <div class="wattmeter-scale wattmeter-scale-9"></div>
+    <div class="wattmeter-scale wattmeter-scale-10"></div>
+    <div class="wattmeter-scale wattmeter-scale-11"></div>
+    <div class="wattmeter-scale wattmeter-scale-12"></div>
+    <div class="wattmeter-scale wattmeter-scale-13"></div>
+    <div class="wattmeter-scale wattmeter-scale-14"></div>
+    <div class="wattmeter-scale wattmeter-scale-15"></div>
+    <div class="wattmeter-scale wattmeter-scale-16"></div>
+    <div class="wattmeter-scale wattmeter-scale-17"></div>
+    <div class="wattmeter-scale wattmeter-scale-18"></div>
+    <div class="wattmeter-scale wattmeter-scale-19"></div>
 </div>
 </template>
 
-<script>
+<script scoped>
+import $ from 'jquery';
+
 export default {
-    name: 'TheWattmeter '
-}
+  name: 'TheWattmeter.vue',
+  data() {
+    return {
+      wattmeterScale: 19,
+      maxPower: 400,
+      power: 0,
+      currentScale: 1
+    };
+  },
+  created() {
+    this.getPower();
+  },
+  methods: {
+    changeTextPower() {
+      $('.watts').text(this.power);
+    },
+    calculateArrowAnglePower() {
+      const proportion = this.power / this.maxPower;
+      const angle = proportion * 180;
+      return angle;
+    },
+    changeArrowAnglePower() {
+      const angle = this.calculateArrowAnglePower();
+      $('.arrow-angle-wattmeter').css({ transform: `rotate(${angle}deg)` });
+    },
+    changeActivePower() {
+      const proportion = this.power / this.maxPower;
+      this.currentScale = parseInt(proportion * this.wattmeterScale);
+      console.log(`CurrentScale: ${this.currentScale}`)
+
+      const activeScales = $('.wattmeter-scale').slice(0, this.currentScale);
+      activeScales.each(function () {
+        $(this).addClass(`active-scale`);
+        console.log(`activeScales: ${activeScales}`)
+      });
+
+      const inactiveScales = $('.wattmeter-scale').slice(this.currentScale, this.wattmeterScale + 2);
+      inactiveScales.each(function () {
+        $(this).removeClass(`active-scale`);
+        console.log(`inactiveScales: ${inactiveScales}`)
+      });
+    },
+    getPower() {
+      // Use a função setInterval para atualizar a potencia a cada intervalo
+      const self = this;
+      setInterval(() => {
+        $.ajax({
+            url : '../php/db_query_ina226.php',
+            type : 'POST',
+            dataType: 'json',
+            success : function (result) {
+              self.power = result.power;
+              self.changeTextPower();
+              self.changeArrowAnglePower();
+              self.changeActivePower();
+            },
+          });
+      }, 500);
+    }
+  },
+};
 </script>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-.speedometer-container {
+.wattmeter-container {
     width: 300px;
     height: 300px;
     border: 3px solid black;
@@ -70,7 +131,7 @@ export default {
     z-index: 10;
 }
 
-.speedometer-scale {
+.wattmeter-scale {
     width: 8px;
     height: 280px;
     background-color: black;
@@ -79,61 +140,61 @@ export default {
     top: 7px;    
 }
 
-.speedometer-scale-1 {
+.wattmeter-scale-1 {
     transform: rotate(-90deg);
 }
-.speedometer-scale-2 {
+.wattmeter-scale-2 {
     transform: rotate(-80deg);
 }
-.speedometer-scale-3 {
+.wattmeter-scale-3 {
     transform: rotate(-70deg);
 }
-.speedometer-scale-4 {
+.wattmeter-scale-4 {
     transform: rotate(-60deg);
 }
-.speedometer-scale-5 {
+.wattmeter-scale-5 {
     transform: rotate(-50deg);
 }
-.speedometer-scale-6 {
+.wattmeter-scale-6 {
     transform: rotate(-40deg);
 }
-.speedometer-scale-7 {
+.wattmeter-scale-7 {
     transform: rotate(-30deg);
 }
-.speedometer-scale-8 {
+.wattmeter-scale-8 {
     transform: rotate(-20deg);
 }
-.speedometer-scale-9 {
+.wattmeter-scale-9 {
     transform: rotate(-10deg);
 }
-.speedometer-scale-10 {
+.wattmeter-scale-10 {
     transform: rotate(0deg);
 }
-.speedometer-scale-11 {
+.wattmeter-scale-11 {
     transform: rotate(10deg);
 }
-.speedometer-scale-12 {
+.wattmeter-scale-12 {
     transform: rotate(20deg);
 }
-.speedometer-scale-13 {
+.wattmeter-scale-13 {
     transform: rotate(30deg);
 }
-.speedometer-scale-14 {
+.wattmeter-scale-14 {
     transform: rotate(40deg);
 }
-.speedometer-scale-15 {
+.wattmeter-scale-15 {
     transform: rotate(50deg);
 }
-.speedometer-scale-16 {
+.wattmeter-scale-16 {
     transform: rotate(60deg);
 }
-.speedometer-scale-17 {
+.wattmeter-scale-17 {
     transform: rotate(70deg);
 }
-.speedometer-scale-18 {
+.wattmeter-scale-18 {
     transform: rotate(80deg);
 }
-.speedometer-scale-19 {
+.wattmeter-scale-19 {
     transform: rotate(90deg);
     height: 244px;
     top: 25px;
@@ -144,7 +205,7 @@ export default {
     background-color: purple;
 }
 
-.speedometer-center-hide {
+.wattmeter-center-hide {
     width: 250px;
     height: 250px;
     background-color: white;
@@ -155,7 +216,7 @@ export default {
     z-index: 9;
 }
 
-.speedometer-bottom-hide {
+.wattmeter-bottom-hide {
     width: 320px;
     height: 250px;
     background-color: white;
@@ -193,11 +254,11 @@ export default {
     left: -30px;
 }
 
-.arrow-angle {
+.arrow-angle-wattmeter {
     transform: rotate(0deg);
 }
 
-.speedometer-text {
+.wattmeter-text {
     width: 180px;
     position: absolute;
     z-index: 20;
