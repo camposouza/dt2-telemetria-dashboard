@@ -12,10 +12,15 @@
     </div>
     <div class="area-tensao-corrente">
         <div class="tensao-corrente">
-            9.05V / 4.41A
+            <TheDisplay />
         </div>
         <div class="graficos">
-            GRAFICOS
+            <div class="chart-voltage">
+
+            </div>
+            <div class="chart-current">
+
+            </div>
         </div>
     </div>
     <div class='area-wattmetro'>
@@ -33,13 +38,15 @@
     import TheWattmeter from './components/TheWattmeter.vue';
     import TheSpeedometer from './components/TheSpeedometer.vue';
     import TheTermometer from './components/TheTermometer.vue';
+    import TheDisplay from './components/TheDisplay.vue';
 
     export default {
         name: 'App',
         components: {
             TheWattmeter,
             TheSpeedometer,
-            TheTermometer
+            TheTermometer,
+            TheDisplay
         }
     }
 </script>
@@ -72,18 +79,21 @@ header {
 }
 
 .area-tensao-corrente {
-    background-color: red;
     display: grid;
     grid-template-rows: 20% 80%;
 }
 
-.tensao-corrente {
-    background-color: rgb(202, 47, 47);
+.graficos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
+.chart-voltage {
+    background-color: red;
+}
 
-.graficos {
-    background-color: rgb(170, 44, 44);
+.chart-current {
+    background-color: rgb(99, 0, 0);
 }
 
 .area-wattmetro {
