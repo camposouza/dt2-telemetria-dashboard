@@ -29,16 +29,20 @@
             <TheWattmeter />
         </div>
     </div>
-    <div class="area-mapa">MAPA</div>
+    <div class="area-mapa">
+        <TheMap />
+    </div>
 </div>
 </body>
 </template>
 
 <script>
+
     import TheWattmeter from './components/TheWattmeter.vue';
     import TheSpeedometer from './components/TheSpeedometer.vue';
     import TheTermometer from './components/TheTermometer.vue';
     import TheDisplay from './components/TheDisplay.vue';
+    import TheMap from './components/TheMap.vue'
 
     export default {
         name: 'App',
@@ -46,7 +50,8 @@
             TheWattmeter,
             TheSpeedometer,
             TheTermometer,
-            TheDisplay
+            TheDisplay,
+            TheMap
         }
     }
 </script>
@@ -89,20 +94,16 @@ header {
 }
 
 .chart-voltage {
-    background-color: red;
+    background-color: white;
 }
 
 .chart-current {
-    background-color: rgb(99, 0, 0);
+    background-color:white;
 }
 
 .area-wattmetro {
     display: grid;
     grid-template-columns: 20% 80%;
     z-index: 10;
-}
-
-.area-mapa {
-    background-color: yellow;
 }
 </style>
