@@ -69,18 +69,15 @@ export default {
     changeActivePower() {
       const proportion = this.power / this.maxPower;
       this.currentScale = parseInt(proportion * this.wattmeterScale);
-      console.log(`CurrentScale: ${this.currentScale}`)
 
       const activeScales = $('.wattmeter-scale').slice(0, this.currentScale);
       activeScales.each(function () {
         $(this).addClass(`active-scale`);
-        console.log(`activeScales: ${activeScales}`)
       });
 
       const inactiveScales = $('.wattmeter-scale').slice(this.currentScale, this.wattmeterScale + 2);
       inactiveScales.each(function () {
         $(this).removeClass(`active-scale`);
-        console.log(`inactiveScales: ${inactiveScales}`)
       });
     },
     getPower() {
